@@ -9,7 +9,7 @@ def calcular_estado(cantidad):
 
 #Entrada datos del producto
 def ingresar_producto():
-    from src.logic.fuctions import calcular_estado  # evita importar todo el módulo
+    from src.logic.functions import calcular_estado  # evita importar todo el módulo
     print('\n--- Ingrese los datos del producto --- \n')
     lote      = input('Escriba el Lote del producto: ')
     codigo    = input('Escriba el Código del producto: ')

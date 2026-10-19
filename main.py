@@ -1,44 +1,26 @@
+import ssl
+import certifi
+ssl._create_default_https_context = ssl.create_default_context
+ssl._create_default_https_context = lambda: ssl.create_default_context(cafile=certifi.where())
+import flet as ft
 import os
-from pathlib import Path
-from src.logic.databaseexcel import crear_archivo, agregar_productos, buscar_producto, mostrar_producto, modificar_producto
-from src.logic.fuctions import ingresar_producto, menu_busqueda
+from src.logic.databaseexcel import crear_archivo
+from src.logic.navigation import configurar_app
 
-ARCHIVO = os.path.join(os.path.expanduser("~"), 'OneDrive', "Desktop", "inventario_prueba.xlsx")
+#Crea el archivo en el escritorio de la pc, pero solo sirve si el escritorio esta en OneDrive
+ARCHIVO = os.path.join(os.path.expanduser("~"), "OneDrive", "inventario_prueba.xlsx")
 
-if not os.path.exists(ARCHIVO):
-    crear_archivo(ARCHIVO)
-else:
-    print('Archivo existente cargado correctamente.\n')
+def main(page: ft.Page):
+    page.theme_mode = ft.ThemeMode.LIGHT  # ← fuerza modo claro siempre
+#Configuracion general de colores
+    page.theme = ft.Theme(
+        color_scheme=ft.ColorScheme(
+            error=ft.Colors.RED_600, 
+            on_error=ft.Colors.WHITE, 
+        )
+    )
+    if not os.path.exists(ARCHIVO):
+        crear_archivo(ARCHIVO)
+    configurar_app(page, ARCHIVO)
 
-while True:
-    print("\n========= MENÚ PRINCIPAL =========")
-    print("  1. Agregar producto")
-    print("  2. Buscar producto")
-    print("  3. Modificar producto")
-    print("  4. Salir")
-    opcion = input("Seleccione una opción: ").strip()
-
-    if opcion == '1':
-        datos = ingresar_producto()
-        guardado = agregar_productos(ARCHIVO, datos)
-        if guardado:
-            print('✔ Producto guardado correctamente.')
-
-    elif opcion == '2':
-        criterio, valor = menu_busqueda()
-        if criterio:
-            wb, ws, fila, cabecera = buscar_producto(ARCHIVO, criterio, valor)
-            if fila:
-                mostrar_producto(cabecera, fila)
-
-    elif opcion == '3':
-        criterio, valor = menu_busqueda()
-        if criterio:
-            modificar_producto(ARCHIVO, criterio, valor)
-
-    elif opcion == '4':
-        print('Programa finalizado.')
-        break
-
-    else:
-        print("⚠ Opción inválida. Intente de nuevo.")
+ft.run(main)

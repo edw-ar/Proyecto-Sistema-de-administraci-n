@@ -81,7 +81,7 @@ def modificar_producto(archivo, criterio, valor):
         nuevo_valor = float(nuevo_valor)
     elif campo_elegido == 'Cantidad':
         nuevo_valor = int(nuevo_valor)
-        from src.logic.fuctions import calcular_estado
+        from logic.functions import calcular_estado
         fila[cabecera.index('Estado')].value = calcular_estado(nuevo_valor)
         print(f"   Estado actualizado a: {fila[cabecera.index('Estado')].value}")
 
