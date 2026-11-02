@@ -13,12 +13,11 @@ class Formulario(ft.Column):
             "unidad": ft.Dropdown(
                         label="Unidad",
                         width=180,
-                        value="lote",
                         options=[
                             ft.dropdown.Option(key="Blister", text="Blister"),
                             ft.dropdown.Option(key="Frasco",  text="Frasco"),
                             ft.dropdown.Option(key="Botella", text="Botella"),
-                            ft.dropdown.Option(key="Caja_Paquete", text="Caja/Paquete"),
+                            ft.dropdown.Option(key="Caja/Paquete", text="Caja/Paquete"),
                             ft.dropdown.Option(key="Otro", text="Otro"),
                         ],
                     ),
@@ -26,16 +25,15 @@ class Formulario(ft.Column):
             "tipo": ft.Dropdown(
                         label="Tipo de producto",
                         width=180,
-                        value="lote",
                         options=[
-                            ft.dropdown.Option(key="Analgesicos_y_antipireticos", text="Analgésicos o antipireticos"),
+                            ft.dropdown.Option(key="Analgesicos y antipireticos", text="Analgésicos o antipireticos"),
                             ft.dropdown.Option(key="Antiinflamatorios", text="Antiinflamatorios"),
-                            ft.dropdown.Option(key="Antibioticos_antibacterianos", text="Antibióticos/Antibacterianos"),
+                            ft.dropdown.Option(key="Antibioticos antibacterianos", text="Antibióticos/Antibacterianos"),
                             ft.dropdown.Option(key="Antivirales", text="Antivirales"),
                             ft.dropdown.Option(key="Antialergicos", text="Antialérgicos"),
-                            ft.dropdown.Option(key="Antiacidos_y_protectores_gastricos", text="Antiácidos o protectores gastricos"),
-                            ft.dropdown.Option(key="Antidiarreicos_y_laxantes", text="Antidiarreicos o laxantes"),
-                            ft.dropdown.Option(key="Psicotropicos_y_ansioliticos", text="Psicotrópicos o ansiolíticos")
+                            ft.dropdown.Option(key="Antiacidos y protectores_gastricos", text="Antiácidos o protectores gastricos"),
+                            ft.dropdown.Option(key="Antidiarreicos y laxantes", text="Antidiarreicos o laxantes"),
+                            ft.dropdown.Option(key="Psicotropicos y ansioliticos", text="Psicotrópicos o ansiolíticos")
                         ],
                     ),
             "fech_entr": ft.TextField(label="Fecha entrada", hint_text="DD/MM/AAAA"),

@@ -8,7 +8,7 @@ def vista_agregar(archivo: str):
         cant = int(datos['cantidad'])
         estado = calcular_estado(cant)
         lista = [datos['lote'], datos['codigo'], float(datos['precio']), 
-                 datos['unidad'].upper(), cant, datos['tipo'].upper(), 
+                 datos['unidad'], cant, datos['tipo'], 
                  datos['fech_entr'], datos['fech_venc'], estado]
         
         if agregar_productos(archivo, lista):

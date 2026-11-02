@@ -1,14 +1,14 @@
 import ssl
 import certifi
-ssl._create_default_https_context = ssl.create_default_context
 ssl._create_default_https_context = lambda: ssl.create_default_context(cafile=certifi.where())
 import flet as ft
 import os
 from src.logic.databaseexcel import crear_archivo
 from src.logic.navigation import configurar_app
 
-#Crea el archivo en el escritorio de la pc, pero solo sirve si el escritorio esta en OneDrive
-ARCHIVO = os.path.join(os.path.expanduser("~"), "OneDrive", "inventario_prueba.xlsx")
+#Crea una carpeta que contenga el inventario en los documentos del ususario.
+CARPETA = os.path.join(os.path.expanduser("~"), "Documents", "Inventario")
+ARCHIVO = os.path.join(CARPETA, "inventario.xlsx")
 
 def main(page: ft.Page):
     page.theme_mode = ft.ThemeMode.LIGHT  # ← fuerza modo claro siempre
@@ -19,6 +19,7 @@ def main(page: ft.Page):
             on_error=ft.Colors.WHITE, 
         )
     )
+    os.makedirs(CARPETA, exist_ok=True)
     if not os.path.exists(ARCHIVO):
         crear_archivo(ARCHIVO)
     configurar_app(page, ARCHIVO)
