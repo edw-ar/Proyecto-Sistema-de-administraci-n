@@ -3,8 +3,8 @@ import certifi
 ssl._create_default_https_context = lambda: ssl.create_default_context(cafile=certifi.where())
 import flet as ft
 import os
-from src.logic.databaseexcel import crear_archivo
 from src.logic.navigation import configurar_app
+from src.logic.databaseexcel import crear_archivo, asegurar_hoja_usuarios
 
 #Crea una carpeta que contenga el inventario en los documentos del ususario.
 CARPETA = os.path.join(os.path.expanduser("~"), "Documents", "Inventario")
@@ -22,6 +22,7 @@ def main(page: ft.Page):
     os.makedirs(CARPETA, exist_ok=True)
     if not os.path.exists(ARCHIVO):
         crear_archivo(ARCHIVO)
+    asegurar_hoja_usuarios(ARCHIVO)
     configurar_app(page, ARCHIVO)
-
+    
 ft.run(main)

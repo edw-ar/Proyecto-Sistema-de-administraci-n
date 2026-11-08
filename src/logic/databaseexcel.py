@@ -1,4 +1,6 @@
 import openpyxl
+import hashlib
+import secrets
 from openpyxl.styles import Font, PatternFill, Alignment
 
 def crear_archivo(archivo):
@@ -52,3 +54,45 @@ def obtener_todos(archivo):
         if any(fila):  # ignora filas vacías
             productos.append(dict(zip(cabecera, fila)))
     return productos
+# ---------- USUARIOS ----------
+
+def hashear_clave(clave, sal):
+    return hashlib.sha256((sal + clave).encode('utf-8')).hexdigest()
+
+def asegurar_hoja_usuarios(archivo):
+    # Crea la hoja Usuarios vacía si no existe.
+    wb = openpyxl.load_workbook(archivo)
+    if 'Usuarios' in wb.sheetnames:
+        return
+    ws = wb.create_sheet('Usuarios')
+    ws.append(['Usuario', 'Sal', 'Contraseña (hash)'])
+    for celda in ws[1]:
+        celda.font = Font(bold=True, color='FFFFFF')
+        celda.fill = PatternFill(fill_type='solid', fgColor='2E4957')
+        celda.alignment = Alignment(horizontal='center')
+    wb.save(archivo)
+
+def agregar_usuario(archivo, usuario, clave):
+    # Devuelve True si lo agregó y False si el usuario ya existe.
+    # Si el Excel está abierto, deja pasar el PermissionError para que la pantalla avise.
+    wb = openpyxl.load_workbook(archivo)
+    ws = wb['Usuarios']
+    for fila in ws.iter_rows(min_row=2, values_only=True):
+        if fila[0] and str(fila[0]).lower() == usuario.lower():
+            return False
+    sal = secrets.token_hex(8)
+    ws.append([usuario, sal, hashear_clave(clave, sal)])
+    wb.save(archivo)
+    return True
+
+def verificar_usuario(archivo, usuario, clave):
+    # Devuelve True si el usuario existe y la contraseña coincide.
+    wb = openpyxl.load_workbook(archivo, read_only=True)
+    try:
+        ws = wb['Usuarios']
+        for fila in ws.iter_rows(min_row=2, values_only=True):
+            if fila[0] and str(fila[0]).lower() == usuario.lower():
+                return hashear_clave(clave, fila[1]) == fila[2]
+        return False
+    finally:
+        wb.close()

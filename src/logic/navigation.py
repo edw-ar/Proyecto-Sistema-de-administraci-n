@@ -4,6 +4,8 @@ from src.ui.ventanas.agregar import vista_agregar
 from src.ui.ventanas.buscar import vista_buscar
 from src.ui.ventanas.modificar import vista_modificar
 from src.ui.ventanas.dashboard import vista_dashboard
+from src.ui.ventanas.login import vista_login
+from src.ui.ventanas.registro import vista_registro
 
 def configurar_app(page: ft.Page, archivo: str):
     page.title = "Sistema de Inventario"
@@ -66,9 +68,25 @@ def configurar_app(page: ft.Page, archivo: str):
         ],
     )
 
-    page.add(
-        ft.Row(
-            controls=[nav, contenido],
-            expand=True,
+    def mostrar_app():
+        page.controls.clear()
+        page.add(
+            ft.Row(
+                controls=[nav, contenido],
+                expand=True,
+            )
         )
-    )
+        page.update()
+
+    def mostrar_login(aviso=''):
+        page.controls.clear()
+        page.add(vista_login(archivo, mostrar_app, mostrar_registro, aviso))
+        page.update()
+
+    def mostrar_registro():
+        page.controls.clear()
+        page.add(vista_registro(archivo, mostrar_login))
+        page.update()
+
+    # Al abrir, solo se ve el login
+    mostrar_login()
