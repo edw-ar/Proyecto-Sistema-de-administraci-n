@@ -25,13 +25,13 @@ def vista_login(archivo, al_entrar_correcto, al_registrarse, aviso=''):
             mensaje.value = '⚠ Ingresa usuario y contraseña.'
         else:
             try:
-                valido = verificar_usuario(archivo, usuario, clave)
+                nombre = verificar_usuario(archivo, usuario, clave)
             except PermissionError:
                 mensaje.value = '⚠ Cierra el Excel e intenta de nuevo.'
                 e.page.update()
                 return
-            if valido:
-                al_entrar_correcto()
+            if nombre:
+                al_entrar_correcto(nombre)
                 return
             mensaje.value = '⚠ Usuario o contraseña incorrectos.'
             campo_clave.value = ''

@@ -86,13 +86,15 @@ def agregar_usuario(archivo, usuario, clave):
     return True
 
 def verificar_usuario(archivo, usuario, clave):
-    # Devuelve True si el usuario existe y la contraseña coincide.
+    # Devuelve el nombre del ususario si los datos son correctos, o None si no lo son.
     wb = openpyxl.load_workbook(archivo, read_only=True)
     try:
         ws = wb['Usuarios']
         for fila in ws.iter_rows(min_row=2, values_only=True):
             if fila[0] and str(fila[0]).lower() == usuario.lower():
-                return hashear_clave(clave, fila[1]) == fila[2]
-        return False
+                if hashear_clave(clave, fila[1]) == fila[2]:
+                    return str(fila[0])
+                return None
+        return None
     finally:
         wb.close()

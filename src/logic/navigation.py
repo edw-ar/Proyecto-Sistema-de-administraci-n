@@ -68,12 +68,29 @@ def configurar_app(page: ft.Page, archivo: str):
         ],
     )
 
-    def mostrar_app():
+    def mostrar_app(usuario):
+        barra_cuenta = ft.Container(
+            content=ft.Row(
+                controls=[
+                    ft.Icon(ft.Icons.ACCOUNT_CIRCLE, color=ft.Colors.WHITE, size=22),
+                    ft.Text(f'Cuenta: {usuario}', color=ft.Colors.WHITE, size=14, weight=ft.FontWeight.BOLD),
+                ],
+                alignment=ft.MainAxisAlignment.END,
+                spacing=8,
+            ),
+            bgcolor='#2E4957',
+            padding=ft.Padding.symmetric(horizontal=20, vertical=8),
+        )
+
         page.controls.clear()
         page.add(
-            ft.Row(
-                controls=[nav, contenido],
+            ft.Column(
+                controls=[
+                    barra_cuenta,
+                    ft.Row(controls=[nav, contenido], expand=True),
+                ],
                 expand=True,
+                spacing=0,
             )
         )
         page.update()
